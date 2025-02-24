@@ -17,9 +17,11 @@ body {
 
 /* Title */
 h1 {
-    font-size: 2.5rem;
-    text-shadow: 2px 2px 10px #00AEEF;
-    margin-bottom: 20px;
+    font-size: 2rem;
+    /* 🔹 Slightly smaller to fit better */
+    text-shadow: 2px 2px 8px #00AEEF;
+    margin-bottom: 10px;
+    /* 🔹 Ensures space between title & game info */
 }
 
 /* Player Name Input */
@@ -39,43 +41,53 @@ input {
     color: #0A1F44;
 }
 
-/* Centered Container */
-.container {
+/* Game Info Display */
+.game-info {
+    font-size: 1rem;
+    background-color: rgba(0, 174, 239, 0.15);
+    padding: 5px;
+    border-radius: 10px;
+    box-shadow: 0 0 8px rgba(0, 174, 239, 0.5);
+    max-width: 500px;
+    width: 90%;
+    min-height: 70px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
+    gap: 6px;
+    /* margin-bottom: 10px; */
 }
 
-/* Game Info Display */
-.game-info {
-    margin-top: 15px;
-    font-size: 1.2rem;
-    background-color: rgba(0, 174, 239, 0.2);
-    padding: 10px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 174, 239, 0.6);
-    width: fit-content;
+.info-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 5px;
+}
+
+#timer,
+#matches {
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 8px;
+    border: 2px solid #00AEEF;
+    border-radius: 5px;
+    background-color: rgba(0, 174, 239, 0.1);
+    box-shadow: inset 0px 0px 5px rgba(0, 174, 239, 0.3);
+    text-align: center;
+    min-width: 130px;
 }
 
 /* GAME BOARD */
 .board {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    /* 6x6 Grid */
     gap: 8px;
-    /* Reducing gap slightly for better spacing */
+    max-width: 800px;
     width: 90vw;
-    /* Responsive width */
-    max-width: 700px;
-    /* Keeps it centered and clean */
-    padding: 25px;
+    padding: 20px;
     background-color: rgba(255, 255, 255, 0.1);
     border: 2px solid #00AEEF;
-    /* border-radius: 10px; */
-    margin-top: 20px;
-    justify-content: center;
-    align-items: center;
     perspective: 1000px;
 }
 
@@ -89,14 +101,12 @@ input {
     aspect-ratio: 1 / 1;
     /* Ensures square shape */
     cursor: pointer;
-    perspective: 1000px;
     transform: scale(1);
     border-radius: 10px;
     padding: 8px;
-    transform-style: preserve-3d;
+
     transition: transform .5s;
     /* add transition: to transform: to make it work */
-
 }
 
 /* Glowing Hover Effect */
@@ -167,6 +177,52 @@ button {
 button:hover {
     background-color: #007bb5;
     transform: scale(1.05);
+}
+
+.regenerating {
+    animation: regenerate-glow 1.5s forwards;
+    /* 🔹 Runs the full glow effect */
+}
+
+#reset-button {
+    margin-top: 20px;
+    margin-bottom: 30px;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    background-color: #00AEEF;
+    color: #0A1F44;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* 🔹 When the player hovers, start the glow effect */
+#reset-button:hover {
+    animation: regenerate-glow 1.5s infinite alternate;
+    transform: scale(1.05);
+    /* 🔹 Slightly grows while glowing */
+}
+
+@keyframes regenerate-glow {
+    0% {
+        box-shadow: 0px 0px 5px rgba(255, 255, 0, 0.2);
+        background-color: #00AEEF;
+        /* 🔹 Starts with normal blue */
+    }
+
+    50% {
+        box-shadow: 0px 0px 20px rgba(255, 223, 0, 0.8);
+        background-color: #FFD700;
+        /* 🔹 Middle glow phase */
+    }
+
+    100% {
+        box-shadow: 0px 0px 40px rgba(255, 255, 0, 1);
+        background-color: #FFCC00;
+        /* 🔹 Full golden regeneration glow */
+    }
 }
 
 /* Timer Flash Effect (for when time is running out) */
