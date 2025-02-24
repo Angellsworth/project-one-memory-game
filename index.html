@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script defer src="/js/app.js"></script>
+    <link rel="stylesheet" href="/css/style.css" />
+    <title>Project One: Memory</title>
+  </head>
+  <body>
+    <!-- GAME TITLE -->
+    <h1>A Timey-Wimey Memory Game</h1>
+
+    <!-- PLAYER NAME INPUT -->
+    <!-- <label for="player-name">You may be a Time Lord,
+but what do they call you? </label><input type="text"
+id="player-name"
+placeholder="Enter your name, traveler..."
+/> -->
+
+    <!-- GAME INFO DISPLAY -->
+    <div class="game-info">
+      <!-- <p id="message">
+        All of time and space, everything that ever happened or ever will... and
+        you forgot that match already?
+      </p> -->
+      <p id="timer">
+        Timey-wimey countdown: <span id="time-left">60</span> seconds
+      </p>
+      <p id="matches">Matches found: <span id="match-count">0</span></p>
+    </div>
+    <main class="container">
+      <!-- GAME BOARD -->
+      <section class="board">
+        <div class="card" data-value="1">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="images/1.jpeg" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+        <div class="card" data-value="2">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="/images/2.jpeg" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+        <div class="card" data-value="3">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="/images/3.jpeg" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+        <div class="card" data-value="4">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="/images/4.jpeg" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+        <div class="card" data-value="5">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="/images/5.jpeg" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+        <div class="card" data-value="6">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="/images/6.jpeg" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+        <div class="card" data-value="7">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="/images/7.jpeg" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+        <div class="card" data-value="8">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="/images/8.jpeg" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+        <div class="card" data-value="9">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="/images/9.jpeg" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+        <div class="card" data-value="10">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="/images/10.jpeg" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+        <div class="card" data-value="11">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="/images/11.jpeg" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+        <div class="card" data-value="12">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="/images/12.jpeg" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+        <div class="card" data-value="13">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="/images/13.jpeg" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+        <div class="card" data-value="15">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="/images/15.jpeg" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+        <div class="card" data-value="16">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="/images/16.jpeg" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+        <div class="card" data-value="17">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="/images/17.jpeg" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+        <div class="card" data-value="tardis">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="/images/tardis.jpeg" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+        <div class="card" data-value="Dalek">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="/images/Dalek.webp" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+        <div class="card" data-value="1">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="images/1.jpeg" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+        <div class="card" data-value="2">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="/images/2.jpeg" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+        <div class="card" data-value="3">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="/images/3.jpeg" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+        <div class="card" data-value="4">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="/images/4.jpeg" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+        <div class="card" data-value="5">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="/images/5.jpeg" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+        <div class="card" data-value="6">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="/images/6.jpeg" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+        <div class="card" data-value="7">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="/images/7.jpeg" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+        <div class="card" data-value="8">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="/images/8.jpeg" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+        <div class="card" data-value="9">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="/images/9.jpeg" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+        <div class="card" data-value="10">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="/images/10.jpeg" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+        <div class="card" data-value="11">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="/images/11.jpeg" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+        <div class="card" data-value="12">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="/images/12.jpeg" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+        <div class="card" data-value="13">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="/images/13.jpeg" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+        <div class="card" data-value="15">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="/images/15.jpeg" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+        <div class="card" data-value="16">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="/images/16.jpeg" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+        <div class="card" data-value="17">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="/images/17.jpeg" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+        <div class="card" data-value="tardis">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="/images/tardis.jpeg" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+        <div class="card" data-value="Dalek">
+          <div class="card-inner">
+            <img
+              src="images/drWhoLogo.jpeg"
+              alt="Dr Who Logo"
+              class="front-face"
+            />
+            <img src="/images/Dalek.webp" alt="Dr Who" class="back-face" />
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- RESET BUTTON -->
+    <button id="reset-button">"Regenerate... the Game!"</button>
+  </body>
+</html>
