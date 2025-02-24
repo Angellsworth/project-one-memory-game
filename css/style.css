@@ -76,7 +76,7 @@ input {
     margin-top: 20px;
     justify-content: center;
     align-items: center;
-    perspective: 1500px;
+    perspective: 1000px;
 }
 
 /* EACH CARD */
