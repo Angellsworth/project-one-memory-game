@@ -4,6 +4,7 @@ const allCards = document.querySelectorAll(".card");
 const matchCountEl = document.getElementById("match-count"); //Updates the matches count
 const resetButton = document.getElementById("reset-button");
 const regenerateSound = new Audio("sounds/regenerate.mp3"); // Load the sound file
+
 //Doctor Who match messages
 const matchMessageArray = [
   "Bow ties are cool! And so is that match!",
@@ -11,11 +12,9 @@ const matchMessageArray = [
   "Geronimo! Another match secured!",
   "I am and always will be the optimist. And you're winning!",
   "Great men are forged in fire. So are great matches!",
-  "We're all stories in the end... And this match is a good one!",
   "The universe is big. It's vast and complicated... But you figured that match out!",
   "Don't blink! You almost missed that match!",
-  "I love a good puzzle. And you're solving this one brilliantly!",
-  "You want weapons? We're in a library! But you found a match instead!"
+  "I love a good puzzle. And you're solving this one brilliantly!"
 ];
 const noMatchMessageArray = [
   "Do you want me to apologize? All right, I'm sorry. Sorry about that! But no match!",
@@ -25,17 +24,13 @@ const noMatchMessageArray = [
   "People assume that time is a strict progression of cause to effect But that card wasn't the effect you expected! ",
   "You need to get yourself a better dictionary Because that wasn't a match! ",
   "Don't blink. Don't even blink But maybe try a different card. ",
-  "Logic, my dear Zoe, merely enables one to be wrong with authority No match! ",
-  "Fantastic Oh wait... no, not this time. Try again!",
-  "Reverse the polarity of the neutron flow But that won't help this mismatch! "
+  "Fantastic Oh wait... no, not this time. Try again!"
 ];
 const newGameMessageArray = [
   "Time to do what I do best. Be brilliant! A new game begins!",
   "All of time and space, where do you want to start? Here's a fresh board!",
   "Change, my dear. And it seems not a moment too soon. The game has been reset!",
   "Time is not the boss of you. But you better hurry up!",
-  "We're all stories in the end... Let's make this a good one!",
-  "The moment has been prepared for. Ready for another round?",
   "Run! The matches won't find themselves!",
   "It's like when you're a kid, and your best friend is imaginary… But these matches are real!",
   "A straight line may be the shortest distance between two points... But can you match them?",
@@ -47,9 +42,10 @@ let hasFlipped = false;
 let lockBoard = false; //Prevents extra clicks
 let firstCard;
 let secondCard;
-let timeLeft = 60;
+let timeLeft = 70;
 let timerInterval; //This will store countdown
 let themeSong = new Audio("sounds/drWhoThemesong.mp3"); //make it global so everyone can use it and stop it
+themeSong.loop = true;
 let messageEl; // Hooked up with an eventlistener at the bottom
 let match = 0;
 let fadeOutInterval; // Handles sound fade out
@@ -75,23 +71,25 @@ function flipCard() {
     firstCard = this;
     return;
   }
+
   //second flip
   hasFlipped = false;
   secondCard = this;
   lockBoard = true; //stops clicking
+
   if (firstCard && secondCard) {
     checkMatch();
   } else {
     console.log("checkMatch was skipped: missing first or second card");
+    flipCardBack();
   }
 }
+
 //Timer starts when we flip our first card
 function startTimer() {
   if (timerInterval) return; //Prevents multiple timers going
 
-  let themeSong = new Audio("sounds/drWhoThemesong.mp3"); //Load the song
-  themeSong.loop = true; //Keep playing for 60 seconds
-  themeSong.play(); //Start the music
+  themeSong.play().catch((error) => console.log("Audio blocked:", error)); // Plays only once
 
   timerInterval = setInterval(() => {
     //Start the countdown
@@ -101,9 +99,11 @@ function startTimer() {
     if (timeLeft === 10) {
       document.getElementById("timer").classList.add("low-time");
     }
+
     if (timeLeft <= 0) {
       clearInterval(timerInterval); //stops the countdown
       themeSong.pause(); //stops song at 0seconds
+      themeSong.currentTime = 0;
       endGame(); //Calls function to end the game
     }
   }, 1000); //runs every second
@@ -113,10 +113,11 @@ function startTimer() {
 function checkMatch() {
   if (!firstCard || !secondCard) {
     messageEl.textContent = getRandomMessage(noMatchMessageArray);
-
+    //if there is an issue and cards are null they will act as NOT a match and flip back over
     flipCardBack();
     return;
   }
+
   //prevents error if a card is null
 
   if (firstCard.dataset.value === secondCard.dataset.value) {
@@ -133,27 +134,35 @@ function checkMatch() {
     flipCardBack(); //Flips unmatched cards back over
   }
 }
+
 //Prevents matche cards from being clicked again
 function stopFlipEvent() {
   firstCard.removeEventListener("click", flipCard);
   secondCard.removeEventListener("click", flipCard);
 }
+
 //Flips cards back if they don't match
 function flipCardBack() {
-  setTimeout(() => {
-    firstCard.classList.remove("flip");
-    secondCard.classList.remove("flip");
-    firstCard = null; //setting to null resets the card
-    secondCard = null;
-    resetBoard(); //unlocks board AFTER flipping back - use instead of "lockBoard" to clear value
-  }, 1000); // 1-second delay
+  setTimeout(
+    () => {
+      firstCard.classList.remove("flip");
+      secondCard.classList.remove("flip");
+      firstCard = null; //setting to null resets the card
+      secondCard = null;
+      resetBoard(); //unlocks board AFTER flipping back - use instead of "lockBoard" to clear value
+    },
+
+    1000
+  ); // 1-second delay
 }
+
 //Resets Board state so you can make new selections
 function resetBoard() {
   firstCard = null;
   secondCard = null;
   lockBoard = false; //board is locked AFTER everything is done
 }
+
 //Shuffles all cards on the board
 function shuffleCards() {
   allCards.forEach((card) => {
@@ -161,6 +170,7 @@ function shuffleCards() {
     card.style.order = randomPosition;
   });
 }
+
 //Resets the game, shuffles, resets match count to 0
 function regenerateGame() {
   shuffleCards();
@@ -170,7 +180,7 @@ function regenerateGame() {
   matchCountEl.textContent = match;
   messageEl.textContent = getRandomMessage(newGameMessageArray);
 
-  timeLeft = 60; //Reset Timer
+  timeLeft = 70; //Reset Timer
   document.getElementById("time-left").textContent = timeLeft; //update timer display
   clearInterval(timerInterval); //Stop running timer
   timerInterval = null; //start fresh
@@ -181,10 +191,12 @@ function regenerateGame() {
     card.addEventListener("click", flipCard); //"RE-add" click event
   });
 }
+
 //Gets random message from the message arrays
 function getRandomMessage(messagesArray) {
   return messagesArray[Math.floor(Math.random() * messagesArray.length)];
 }
+
 //Stop the Game after 60sec, stop the music, generate a stats message, restart game button
 function endGame() {
   lockBoard = true; //stops card clicks
@@ -223,15 +235,19 @@ resetButton.addEventListener("mouseenter", function () {
 
 // Fade out the regeneration sound when moving the cursor away
 resetButton.addEventListener("mouseleave", function () {
-  fadeOutInterval = setInterval(() => {
-    if (regenerateSound.volume > 0.05) {
-      regenerateSound.volume -= 0.05; // Reduce volume gradually
-    } else {
-      regenerateSound.pause(); // Stop playback when volume is low enough
-      regenerateSound.currentTime = 0; // Reset to start
-      clearInterval(fadeOutInterval); // Stop the fade-out process
-    }
-  }, 50); //smooths fade
+  fadeOutInterval = setInterval(
+    () => {
+      if (regenerateSound.volume > 0.05) {
+        regenerateSound.volume -= 0.05; // Reduce volume gradually
+      } else {
+        regenerateSound.pause(); // Stop playback when volume is low enough
+        regenerateSound.currentTime = 0; // Reset to start
+        clearInterval(fadeOutInterval); // Stop the fade-out process
+      }
+    },
+
+    50
+  ); //smooths fade
 });
 
 //Play regeneration sound when clicking button
@@ -243,7 +259,11 @@ resetButton.addEventListener("click", function () {
 
   resetButton.classList.add("regenerating"); // Add glow effect to look like regeneration
 
-  setTimeout(() => {
-    resetButton.classList.remove("regenerating"); // Remove glow after 1.5 seconds
-  }, 1500);
+  setTimeout(
+    () => {
+      resetButton.classList.remove("regenerating"); // Remove glow after 1.5 seconds
+    },
+
+    1500
+  );
 });
