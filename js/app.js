@@ -47,6 +47,9 @@ let hasFlipped = false;
 let lockBoard = false; //Prevents extra clicks
 let firstCard;
 let secondCard;
+let timeLeft = 60;
+let timerInterval; //This will store countdown
+let themeSong = new Audio("sounds/drWhoThemesong.mp3"); //make it global so everyone can use it and stop it
 let messageEl; // Hooked up with an eventlistener at the bottom
 let match = 0;
 let fadeOutInterval; // Handles sound fade out
@@ -58,6 +61,11 @@ let fadeOutInterval; // Handles sound fade out
 function flipCard() {
   if (lockBoard) return; //Stops extra clicks
   if (this === firstCard) return; //Prevents matching the same card
+
+  // Start the timer when the first card is flipped
+  if (!timerInterval) {
+    startTimer();
+  }
 
   this.classList.toggle("flip");
 
@@ -71,11 +79,46 @@ function flipCard() {
   hasFlipped = false;
   secondCard = this;
   lockBoard = true; //stops clicking
-
-  checkMatch();
+  if (firstCard && secondCard) {
+    checkMatch();
+  } else {
+    console.log("checkMatch was skipped: missing first or second card");
+  }
 }
+//Timer starts when we flip our first card
+function startTimer() {
+  if (timerInterval) return; //Prevents multiple timers going
+
+  let themeSong = new Audio("sounds/drWhoThemesong.mp3"); //Load the song
+  themeSong.loop = true; //Keep playing for 60 seconds
+  themeSong.play(); //Start the music
+
+  timerInterval = setInterval(() => {
+    //Start the countdown
+    timeLeft--; //subtracts time by 1 second
+    document.getElementById("time-left").textContent = timeLeft; //update the display
+
+    if (timeLeft === 10) {
+      document.getElementById("timer").classList.add("low-time");
+    }
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval); //stops the countdown
+      themeSong.pause(); //stops song at 0seconds
+      endGame(); //Calls function to end the game
+    }
+  }, 1000); //runs every second
+}
+
 //Checks if the two flipped cards match
 function checkMatch() {
+  if (!firstCard || !secondCard) {
+    messageEl.textContent = getRandomMessage(noMatchMessageArray);
+
+    flipCardBack();
+    return;
+  }
+  //prevents error if a card is null
+
   if (firstCard.dataset.value === secondCard.dataset.value) {
     console.log("It's a match!");
     messageEl.textContent = getRandomMessage(matchMessageArray);
@@ -122,9 +165,16 @@ function shuffleCards() {
 function regenerateGame() {
   shuffleCards();
   resetBoard();
+
   match = 0;
   matchCountEl.textContent = match;
   messageEl.textContent = getRandomMessage(newGameMessageArray);
+
+  timeLeft = 60; //Reset Timer
+  document.getElementById("time-left").textContent = timeLeft; //update timer display
+  clearInterval(timerInterval); //Stop running timer
+  timerInterval = null; //start fresh
+  document.getElementById("timer").classList.remove("low-time"); //Remove flashing red
 
   allCards.forEach((card) => {
     card.classList.remove("flip"); //turn each individual card face down
@@ -134,6 +184,20 @@ function regenerateGame() {
 //Gets random message from the message arrays
 function getRandomMessage(messagesArray) {
   return messagesArray[Math.floor(Math.random() * messagesArray.length)];
+}
+//Stop the Game after 60sec, stop the music, generate a stats message, restart game button
+function endGame() {
+  lockBoard = true; //stops card clicks
+  clearInterval(timerInterval); //Stops Timer
+
+  themeSong.pause(); //Pauses the song
+  themeSong.currentTime = 0; //Reset song to start
+
+  messageEl.textContent = `Time's up! You found ${match} Doctors. Try again!`;
+
+  allCards.forEach((card) => card.removeEventListener("click", flipCard)); //remove event listener
+
+  resetButton.style.display = "block"; //make button visible
 }
 
 /*----------------------------- Event Listeners -----------------------------*/
