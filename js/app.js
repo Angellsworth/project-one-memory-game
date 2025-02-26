@@ -42,7 +42,7 @@ let hasFlipped = false;
 let lockBoard = false; //Prevents extra clicks
 let firstCard;
 let secondCard;
-let timeLeft = 70;
+let timeLeft = 90;
 let timerInterval; //This will store countdown
 let themeSong = new Audio("sounds/drWhoThemesong.mp3"); //make it global so everyone can use it and stop it
 themeSong.loop = true;
@@ -180,7 +180,7 @@ function regenerateGame() {
   matchCountEl.textContent = match;
   messageEl.textContent = getRandomMessage(newGameMessageArray);
 
-  timeLeft = 70; //Reset Timer
+  timeLeft = 90; //Reset Timer
   document.getElementById("time-left").textContent = timeLeft; //update timer display
   clearInterval(timerInterval); //Stop running timer
   timerInterval = null; //start fresh

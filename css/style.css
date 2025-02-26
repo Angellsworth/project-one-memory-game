@@ -12,13 +12,13 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    
+
 }
 
 /* Title */
 h1 {
     font-size: 2rem;
-    text-shadow: 2px 2px 8px #00AEEF;
+    /* text-shadow: 2px 2px 8px #00AEEF; doesn't pass WCAG 2.0 level AA standard */
     margin-bottom: 10px;
 }
 
