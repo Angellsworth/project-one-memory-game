@@ -4,7 +4,7 @@ const allCards = document.querySelectorAll(".card");
 const matchCountEl = document.getElementById("match-count"); //Updates the matches count
 const resetButton = document.getElementById("reset-button");
 const regenerateSound = new Audio("sounds/regenerate.mp3"); // Load the sound file
-const themeSong = new Audio("sounds/drWhoThemesong.mp3"); //make it global so everyone can use it and stop it
+const themeSong = new Audio("sounds/drWhoThemeSong.mp3"); //make it global so everyone can use it and stop it
 
 //Doctor Who match messages
 const matchMessageArray = [
