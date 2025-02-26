@@ -90,24 +90,29 @@ function startTimer() {
   if (timerInterval) return; //Prevents multiple timers going
 
   themeSong.play().catch((error) => console.log("Audio blocked:", error));
+
   // Plays only once
-  timerInterval = setInterval(() => {
-    //Start the countdown
-    timeLeft--; //subtracts time by 1 second
-    document.getElementById("time-left").textContent = timeLeft; //update the display
+  timerInterval = setInterval(
+    () => {
+      //Start the countdown
+      timeLeft--; //subtracts time by 1 second
+      document.getElementById("time-left").textContent = timeLeft; //update the display
 
-    if (timeLeft === 10) {
-      document.getElementById("timer").classList.add("low-time");
-    }
+      if (timeLeft === 10) {
+        document.getElementById("timer").classList.add("low-time");
+      }
 
-    if (timeLeft <= 0) {
-      clearInterval(timerInterval); //stops the countdown
-      timerInterval = null; // Reset timer state
-      themeSong.pause(); //stops song at 0seconds
-      themeSong.currentTime = 0;
-      endGame(); //Calls function to end the game
-    }
-  }, 1000); //runs every second
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval); //stops the countdown
+        timerInterval = null; // Reset timer state
+        themeSong.pause(); //stops song at 0seconds
+        themeSong.currentTime = 0;
+        endGame(); //Calls function to end the game
+      }
+    },
+
+    1000
+  ); //runs every second
 }
 
 //Checks if the two flipped cards match
@@ -144,21 +149,25 @@ function stopFlipEvent() {
 
 //Flips cards back if they don't match
 function flipCardBack() {
-  setTimeout(() => {
-    if (firstCard && secondCard) {
-      // ✅ Check if they exist before modifying them
-      firstCard.classList.remove("flip");
-      secondCard.classList.remove("flip");
-    } else {
-      console.warn(
-        "flipCardBack() was called but firstCard or secondCard is null."
-      );
-    }
+  setTimeout(
+    () => {
+      if (firstCard && secondCard) {
+        // Check if they exist before modifying them
+        firstCard.classList.remove("flip");
+        secondCard.classList.remove("flip");
+      } else {
+        console.warn(
+          "flipCardBack() was called but firstCard or secondCard is null."
+        );
+      }
 
-    firstCard = null; // Reset the card selection
-    secondCard = null;
-    resetBoard(); // Unlocks board AFTER flipping back
-  }, 1000); // 1-second delay
+      firstCard = null; // Reset the card selection
+      secondCard = null;
+      resetBoard(); // Unlocks board AFTER flipping back
+    },
+
+    1000
+  ); // 1-second delay
 }
 
 //Resets Board state so you can make new selections
@@ -199,6 +208,7 @@ function regenerateGame() {
     card.classList.remove("flip"); //turn each individual card face down
     card.addEventListener("click", flipCard); //"RE-add" click event
   });
+  document.getElementById("game-over-overlay").style.display = "none"; // Hide overlay
 }
 
 //Gets random message from the message arrays
@@ -214,12 +224,17 @@ function endGame() {
   themeSong.pause(); //Pauses the song
   themeSong.currentTime = 0; //Reset song to start
 
-  messageEl.textContent = `Time's up! You found ${match} Doctors. Try again!`;
-
+  // Only show the overlay if the timer reached 0 (not when all matches are found)
+  if (timeLeft <= 0) {
+    document.getElementById("final-match-count").textContent = match;
+    document.getElementById("game-over-overlay").style.display = "flex";
+  }
   allCards.forEach((card) => card.removeEventListener("click", flipCard)); //remove event listener
 
   resetButton.style.display = "block"; //make button visible
-} /*----------------------------- Event Listeners -----------------------------*/
+}
+
+/*----------------------------- Event Listeners -----------------------------*/
 
 // Attach click event to all cards
 allCards.forEach((card) => card.addEventListener("click", flipCard));
@@ -230,7 +245,7 @@ document.addEventListener("DOMContentLoaded", function () {
   shuffleCards();
 });
 
-// ✅ Reset button click event (merged logic)
+// Reset button click event (merged logic)
 resetButton.addEventListener("click", function () {
   // Stop theme song when regenerating
   themeSong.pause();
@@ -243,14 +258,19 @@ resetButton.addEventListener("click", function () {
   // Regenerate the game (shuffle cards, reset matches & time)
   regenerateGame();
 
-  // ✅ Play the regeneration animation, but NOT the sound
+  // Play the regeneration animation, but NOT the sound
   resetButton.classList.add("regenerating");
-  setTimeout(() => {
-    resetButton.classList.remove("regenerating");
-  }, 1500);
+
+  setTimeout(
+    () => {
+      resetButton.classList.remove("regenerating");
+    },
+
+    1500
+  );
 });
 
-// ✅ Keep regeneration sound for hover effect
+// Keep regeneration sound for hover effect
 resetButton.addEventListener("mouseenter", function () {
   clearInterval(fadeOutInterval); // Stop any existing fade-out process
   regenerateSound.volume = 1.0;
@@ -258,15 +278,36 @@ resetButton.addEventListener("mouseenter", function () {
   regenerateSound.play();
 });
 
-// ✅ Keep fade-out effect when moving the cursor away
+// Keep fade-out effect when moving the cursor away
 resetButton.addEventListener("mouseleave", function () {
-  fadeOutInterval = setInterval(() => {
-    if (regenerateSound.volume > 0.05) {
-      regenerateSound.volume -= 0.05;
-    } else {
-      regenerateSound.pause();
-      regenerateSound.currentTime = 0;
-      clearInterval(fadeOutInterval);
-    }
-  }, 50);
+  fadeOutInterval = setInterval(
+    () => {
+      if (regenerateSound.volume > 0.05) {
+        regenerateSound.volume -= 0.05;
+      } else {
+        regenerateSound.pause();
+        regenerateSound.currentTime = 0;
+        clearInterval(fadeOutInterval);
+      }
+    },
+
+    50
+  );
+});
+// Ensure the script runs only after the page is fully loaded
+document.addEventListener("DOMContentLoaded", function () {
+  console.log("DOM fully loaded. Hiding Play Again button...");
+
+  document.getElementById("game-over-overlay").style.display = "none";
+
+  const playAgainButton = document.getElementById("play-again-button");
+  if (playAgainButton) {
+    playAgainButton.addEventListener("click", function () {
+      console.log("Play Again button clicked! Restarting game...");
+      document.getElementById("game-over-overlay").style.display = "none"; // Hide overlay
+      regenerateGame(); // Restart the game
+    });
+  } else {
+    console.error("Play Again button not found! Check your HTML.");
+  }
 });

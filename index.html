@@ -410,8 +410,22 @@
         </div>
       </section>
     </main>
-
     <!-- RESET BUTTON -->
-    <button id="reset-button">"Regenerate... the Game!"</button>
+    <button id="reset-button">Regenerate... the Game!</button>
+    <!-- Game over display -->
+    <div id="game-over-overlay">
+      <div id="game-over-message">
+        <h2>Oi! Time's up!</h2>
+        <p>
+          You successfully matched <span id="final-match-count">0</span> Doctors
+          before time ran out!
+        </p>
+        <p>
+          Wanna have another go, or are you just gonna stand there like a spare
+          part?
+        </p>
+        <button id="play-again-button">Alright, one more try!”</button>
+      </div>
+    </div>
   </body>
 </html>
