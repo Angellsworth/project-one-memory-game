@@ -4,7 +4,7 @@ const allCards = document.querySelectorAll(".card");
 const matchCountEl = document.getElementById("match-count"); //Updates the matches count
 const resetButton = document.getElementById("reset-button");
 const regenerateSound = new Audio("sounds/regenerate.mp3"); // Load the sound file
-const themeSong = new Audio("sounds/drWhoThemeSong.mp3"); //make it global so everyone can use it and stop it
+const themeSong = new Audio("sounds/themeSong.mp3"); //make it global so everyone can use it and stop it
 
 //Doctor Who match messages
 const matchMessageArray = [
@@ -89,8 +89,8 @@ function flipCard() {
 function startTimer() {
   if (timerInterval) return; //Prevents multiple timers going
 
-  themeSong.play();
-  // .catch((error) => console.log("Audio blocked:", error)); // Plays only once
+  themeSong.play().catch((error) => console.log("Audio blocked:", error));
+  // Plays only once
   timerInterval = setInterval(() => {
     //Start the countdown
     timeLeft--; //subtracts time by 1 second
@@ -102,6 +102,7 @@ function startTimer() {
 
     if (timeLeft <= 0) {
       clearInterval(timerInterval); //stops the countdown
+      timerInterval = null; // Reset timer state
       themeSong.pause(); //stops song at 0seconds
       themeSong.currentTime = 0;
       endGame(); //Calls function to end the game
@@ -218,60 +219,54 @@ function endGame() {
   allCards.forEach((card) => card.removeEventListener("click", flipCard)); //remove event listener
 
   resetButton.style.display = "block"; //make button visible
-}
+} /*----------------------------- Event Listeners -----------------------------*/
 
-/*----------------------------- Event Listeners -----------------------------*/
-//Attach click event to all cards
+// Attach click event to all cards
 allCards.forEach((card) => card.addEventListener("click", flipCard));
 
-//Shuffle cards when page loads
+// Shuffle cards when page loads
 document.addEventListener("DOMContentLoaded", function () {
   messageEl = document.getElementById("message");
   shuffleCards();
 });
 
-//Regenerate game when reset button is clicked
-resetButton.addEventListener("click", regenerateGame);
+// ✅ Reset button click event (merged logic)
+resetButton.addEventListener("click", function () {
+  // Stop theme song when regenerating
+  themeSong.pause();
+  themeSong.currentTime = 0;
 
-// Play regeneration sound when hovering over the button
+  // Stop any running timer
+  clearInterval(timerInterval);
+  timerInterval = null;
+
+  // Regenerate the game (shuffle cards, reset matches & time)
+  regenerateGame();
+
+  // ✅ Play the regeneration animation, but NOT the sound
+  resetButton.classList.add("regenerating");
+  setTimeout(() => {
+    resetButton.classList.remove("regenerating");
+  }, 1500);
+});
+
+// ✅ Keep regeneration sound for hover effect
 resetButton.addEventListener("mouseenter", function () {
   clearInterval(fadeOutInterval); // Stop any existing fade-out process
-  regenerateSound.volume = 1.0; // Reset volume to full
-  regenerateSound.currentTime = 0; // Start from the beginning
+  regenerateSound.volume = 1.0;
+  regenerateSound.currentTime = 0;
   regenerateSound.play();
 });
 
-// Fade out the regeneration sound when moving the cursor away
+// ✅ Keep fade-out effect when moving the cursor away
 resetButton.addEventListener("mouseleave", function () {
-  fadeOutInterval = setInterval(
-    () => {
-      if (regenerateSound.volume > 0.05) {
-        regenerateSound.volume -= 0.05; // Reduce volume gradually
-      } else {
-        regenerateSound.pause(); // Stop playback when volume is low enough
-        regenerateSound.currentTime = 0; // Reset to start
-        clearInterval(fadeOutInterval); // Stop the fade-out process
-      }
-    },
-
-    50
-  ); //smooths fade
-});
-
-//Play regeneration sound when clicking button
-resetButton.addEventListener("click", function () {
-  clearInterval(fadeOutInterval); // Stop any fade-out when clicking
-  regenerateSound.volume = 0.8; // volume on click
-  regenerateSound.currentTime = 0; // Reset sound to start
-  regenerateSound.play();
-
-  resetButton.classList.add("regenerating"); // Add glow effect to look like regeneration
-
-  setTimeout(
-    () => {
-      resetButton.classList.remove("regenerating"); // Remove glow after 1.5 seconds
-    },
-
-    1500
-  );
+  fadeOutInterval = setInterval(() => {
+    if (regenerateSound.volume > 0.05) {
+      regenerateSound.volume -= 0.05;
+    } else {
+      regenerateSound.pause();
+      regenerateSound.currentTime = 0;
+      clearInterval(fadeOutInterval);
+    }
+  }, 50);
 });
