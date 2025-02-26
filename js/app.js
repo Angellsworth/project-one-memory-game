@@ -141,19 +141,37 @@ function stopFlipEvent() {
   secondCard.removeEventListener("click", flipCard);
 }
 
+// //Flips cards back if they don't match
+// function flipCardBack() {
+//   setTimeout(
+//     () => {
+//       firstCard.classList.remove("flip");
+//       secondCard.classList.remove("flip");
+//       firstCard = null; //setting to null resets the card
+//       secondCard = null;
+//       resetBoard(); //unlocks board AFTER flipping back - use instead of "lockBoard" to clear value
+//     },
+
+//     1000
+//   ); // 1-second delay
+// }
 //Flips cards back if they don't match
 function flipCardBack() {
-  setTimeout(
-    () => {
+  setTimeout(() => {
+    if (firstCard && secondCard) {
+      // ✅ Check if they exist before modifying them
       firstCard.classList.remove("flip");
       secondCard.classList.remove("flip");
-      firstCard = null; //setting to null resets the card
-      secondCard = null;
-      resetBoard(); //unlocks board AFTER flipping back - use instead of "lockBoard" to clear value
-    },
+    } else {
+      console.warn(
+        "flipCardBack() was called but firstCard or secondCard is null."
+      );
+    }
 
-    1000
-  ); // 1-second delay
+    firstCard = null; // Reset the card selection
+    secondCard = null;
+    resetBoard(); // Unlocks board AFTER flipping back
+  }, 1000); // 1-second delay
 }
 
 //Resets Board state so you can make new selections
