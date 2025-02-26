@@ -89,7 +89,7 @@ function flipCard() {
 function startTimer() {
   if (timerInterval) return; //Prevents multiple timers going
 
-  themeSong.play().catch((error) => console.log("Audio blocked:", error)); // Plays only once
+  // themeSong.play().catch((error) => console.log("Audio blocked:", error)); // Plays only once
 
   timerInterval = setInterval(() => {
     //Start the countdown
@@ -135,26 +135,12 @@ function checkMatch() {
   }
 }
 
-//Prevents matche cards from being clicked again
+//Prevents matched cards from being clicked again
 function stopFlipEvent() {
   firstCard.removeEventListener("click", flipCard);
   secondCard.removeEventListener("click", flipCard);
 }
 
-// //Flips cards back if they don't match
-// function flipCardBack() {
-//   setTimeout(
-//     () => {
-//       firstCard.classList.remove("flip");
-//       secondCard.classList.remove("flip");
-//       firstCard = null; //setting to null resets the card
-//       secondCard = null;
-//       resetBoard(); //unlocks board AFTER flipping back - use instead of "lockBoard" to clear value
-//     },
-
-//     1000
-//   ); // 1-second delay
-// }
 //Flips cards back if they don't match
 function flipCardBack() {
   setTimeout(() => {
