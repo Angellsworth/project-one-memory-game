@@ -74,3 +74,55 @@ function flipCard() {
 
   checkMatch();
 }
+
+---
+
+## 🛠️ Technologies Used  
+- **JavaScript** – Handles game logic & DOM manipulation  
+- **HTML5** – Structure of the game  
+- **CSS3** – Styling, animations, and layout   
+
+---
+
+## 🎨 Attributions  
+Big shoutout to these **websites** that helped make this game funner:  
+- 🖼️ **Doctor Who Images** – [Dr. Who Images](https://www.blogtorwho.com/doctor-who-named-top-bbc-drama-of-the-century-by-viewers/)  
+- 🎵 **Music & Sound Effects** –   
+  - [Dr. Who Theme Song](https://archive.org/details/tvtunes_185)  
+  - [Dr. Who Regeneration](https://tuna.voicemod.net/sound/01f3b51e-e67c-487e-af31-8d9276a0c65b)   
+
+---
+
+## 📜 Project Planning Materials  
+I planned this game by breaking it down into key features and ensuring smooth game logic. Since Memory is a well-known game, I didn’t create formal wireframes but focused on JavaScript DOM manipulation to bring it to life.  
+
+### **Game Concept & Objective**  
+The goal is simple: **Match all the Doctors before time runs out!** The game uses **JavaScript DOM manipulation** and keeps track of player interactions.  
+
+### **Planned Features**  
+✅ Flip cards to reveal Doctor Who characters.  
+✅ Match two identical cards to remove them from play.  
+✅ A timer to add challenge.  
+✅ **Win condition:** All pairs matched before time runs out.  
+✅ **Lose condition:** Time runs out with unmatched pairs.  
+✅ Reset button to restart the game.  
+
+### **Challenges & Notes**  
+- Making sure the **cards don’t flip too fast or too slow**.  
+- **Preventing rapid clicking** that could break the logic.  
+- Handling the **shuffle function** so the game feels different each time.  
+- Ensuring the **game resets properly** when clicking "Restart."  
+
+📌 **Link to additional planning notes (if applicable):** [Insert link if you have a Google Doc, Notion, or Trello board]  
+
+---
+
+## 🚀 Next Steps & Future Enhancements  
+✅ **Difficulty Levels** – Small, Medium, and Large grid choices (for those with a Time Lord memory!🧠)  
+✅ **Leaderboard** – Track your fastest times across the universe! 🌌  
+✅ **Regeneration Mode** – What if the cards shuffled after each match? 🤯  
+✅ **Sound Effects** – The **TARDIS whoosh** when you win! 🛸  
+
+---
+
+🚀 **Made with ❤️ and a little bit of wibbly-wobbly code by Angela Ellsworth
