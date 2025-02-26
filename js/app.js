@@ -4,6 +4,7 @@ const allCards = document.querySelectorAll(".card");
 const matchCountEl = document.getElementById("match-count"); //Updates the matches count
 const resetButton = document.getElementById("reset-button");
 const regenerateSound = new Audio("sounds/regenerate.mp3"); // Load the sound file
+const themeSong = new Audio("sounds/drWhoThemesong.mp3"); //make it global so everyone can use it and stop it
 
 //Doctor Who match messages
 const matchMessageArray = [
@@ -44,7 +45,6 @@ let firstCard;
 let secondCard;
 let timeLeft = 90;
 let timerInterval; //This will store countdown
-let themeSong = new Audio("sounds/drWhoThemesong.mp3"); //make it global so everyone can use it and stop it
 themeSong.loop = true;
 let messageEl; // Hooked up with an eventlistener at the bottom
 let match = 0;
@@ -89,8 +89,8 @@ function flipCard() {
 function startTimer() {
   if (timerInterval) return; //Prevents multiple timers going
 
-  // themeSong.play().catch((error) => console.log("Audio blocked:", error)); // Plays only once
-
+  themeSong.play();
+  // .catch((error) => console.log("Audio blocked:", error)); // Plays only once
   timerInterval = setInterval(() => {
     //Start the countdown
     timeLeft--; //subtracts time by 1 second
@@ -177,6 +177,10 @@ function shuffleCards() {
 
 //Resets the game, shuffles, resets match count to 0
 function regenerateGame() {
+  // Stop the theme song when regenerating
+  themeSong.pause();
+  themeSong.currentTime = 0; // Reset song position to the start
+
   shuffleCards();
   resetBoard();
 
