@@ -166,8 +166,8 @@ function flipCardBack() {
       resetBoard(); // Unlocks board AFTER flipping back
     },
 
-    1000
-  ); // 1-second delay
+    500
+  );
 }
 
 //Resets Board state so you can make new selections
