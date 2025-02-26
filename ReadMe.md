@@ -54,8 +54,8 @@ This visually rearranges the cards on the board each time the game starts.
 Here are a few core functions that make the game work:  
 
 ### 🃏 Flip Card Function  
-Controls the flipping logic and ensures only two cards are flipped at a time.  
-```javascript
+Controls the flipping logic and ensures only two cards are flipped at a time. 
+``` javascript
 function flipCard() {
   if (lockBoard) return; // Prevents extra clicks
   if (this === firstCard) return; // Prevents clicking the same card twice
@@ -74,7 +74,7 @@ function flipCard() {
 
   checkMatch();
 }
-
+```
 ---
 
 ## 🛠️ Technologies Used  
