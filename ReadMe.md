@@ -21,7 +21,7 @@ This is my **first project for Adobe Digital Academy**, where I am refining my *
 ---
 
 ## 🚀 Getting Started  
-🔗 **Play the game here:** [Link to deployed game]  
+🔗 **Play the game here:** [Doctor Who Memory Game](https://angellsworth.github.io/project-one-memory-game/)  
 
 ### 🎯 How to Play:  
 1. Flip cards to reveal **Doctor Who characters**.  
@@ -112,8 +112,6 @@ The goal is simple: **Match all the Doctors before time runs out!** The game use
 - **Preventing rapid clicking** that could break the logic.  
 - Handling the **shuffle function** so the game feels different each time.  
 - Ensuring the **game resets properly** when clicking "Restart."  
-
-📌 **Link to additional planning notes (if applicable):** [Insert link if you have a Google Doc, Notion, or Trello board]  
 
 ---
 
