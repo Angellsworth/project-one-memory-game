@@ -8,15 +8,10 @@
     <title>Project One: Memory</title>
   </head>
   <body>
-    <body>
-      <div class="stars"></div>
-      <div class="clouds"></div>
-      <div class="twinkle"></div>
-    </body>
     <!-- GAME TITLE -->
-    <h1>A Timey-Wimey Memory Game</h1>
 
     <!-- GAME INFO DISPLAY -->
+    <h1>A Timey-Wimey Memory Game</h1>
     <div class="game-info">
       <p id="message">
         All of time and space, everything that ever happened or ever will... and
@@ -412,20 +407,23 @@
     </main>
     <!-- RESET BUTTON -->
     <button id="reset-button">Regenerate... the Game!</button>
-    <!-- Game over display -->
-    <div id="game-over-overlay">
-      <div id="game-over-message">
-        <h2>Oi! Time's up!</h2>
-        <p>
-          You matched <span id="final-match-count">0</span> Doctors before time
-          ran out!
-        </p>
-        <p>
-          Wanna have another go, or are you just gonna stand there like a spare
-          part?
-        </p>
-        <button id="play-again-button">Alright, one more try!”</button>
-      </div>
+    <!-- Game Over Overlay -->
+<div id="game-over-overlay" class="game-overlay">
+  <div id="game-over-message" class="message-box">
+      <h2>Time's Up!</h2>
+      <p id="final-match-count" class="message-text"></p>
+      <button id="play-again-button" class="play-again-button">Play Again</button>
+  </div>
+</div>
+
+<!-- Win Message Overlay -->
+<div id="game-win-overlay" class="game-overlay">
+  <div id="win-message-box" class="message-box">
+      <h2>⏳🌀🚀 You Win! 🚀🌀⏳</h2>
+      <p id="win-message" class="message-text">You were Fantastic!</p>
+      <button id="play-again-win-button" class="play-again-button">Play Again</button>
+  </div>
+</div>
     </div>
   </body>
 </html>

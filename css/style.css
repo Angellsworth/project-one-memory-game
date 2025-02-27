@@ -243,60 +243,49 @@ button:hover {
     animation: time-running-out 1s infinite;
 }
 
-/* Game Over Overlay */
-#game-over-overlay {
+/* Game Over & Win Overlay */
+.game-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.85);
-    /* Darker for contrast */
-    display: flex;
+    display: none; /* Hidden by default */
     align-items: center;
     justify-content: center;
     z-index: 999;
     backdrop-filter: blur(3px);
 }
 
-
-/* Message Box */
-#game-over-message {
-    background: #373737ae;
-    /* Deep dark grey instead of bright gradient */
+/* Common Message Box for Both Overlays */
+.message-box {
+    background: #2b2b2b;
     color: #FFF;
     text-align: center;
     padding: 25px;
     border-radius: 10px;
-    box-shadow: 0px 4px 15px rgba(218, 125, 12, 0.4);
+    box-shadow: 0px 4px 15px rgba(255, 217, 0, 0.4);
     max-width: 500px;
     width: 90%;
 }
 
-#final-match-count {
-    font-size: 4rem;
-    font-weight: bold;
-    color: #FFD700;
-    text-shadow: 0px 0px 2px rgba(255, 217, 0, 0.713);
-    display: block;
-    margin: 8px 0;
-}
-
-/* "Time's Up!" Heading */
-#game-over-message h2 {
-    margin-bottom: 10px;
+/* Common Header for Both Overlays */
+.message-box h2 {
     font-size: 2rem;
+    color: #FFD700;
+    text-shadow: 0px 0px 5px rgba(255, 217, 0, 0.8);
 }
 
-/* Match Count */
-#game-over-message p {
+/* Common Message Text */
+.message-text {
     font-size: 1.5rem;
     font-weight: bold;
     color: #00AEEF;
 }
 
-/* Play Again Button */
-#play-again-button {
+/* Common Play Again Button */
+.play-again-button {
     margin-top: 20px;
     padding: 12px 24px;
     font-size: 1.3rem;
@@ -310,36 +299,47 @@ button:hover {
     box-shadow: 0px 0px 10px rgba(255, 111, 0, 0.6);
 }
 
-#play-again-button:hover {
+.play-again-button:hover {
     background: #FFD700;
-    /* Gold hover */
     color: #000;
-    /* Dark text for contrast */
     transform: scale(1.05);
     box-shadow: 0px 0px 15px rgba(255, 223, 0, 0.8);
 }
 
-@keyframes regenerate-glow {
-    0% {
-        box-shadow: 0px 0px 5px rgba(255, 255, 0, 0.2);
-        background-color: #00AEEF;
+/* Small Phones: Adjust for compact screens */
+@media (max-width: 480px) {
+    .board {
+        grid-template-columns: repeat(3, 1fr);
+        /* 3 columns for smaller screens */
+        gap: 4px;
+        max-width: 95%;
     }
 
-    50% {
-        box-shadow: 0px 0px 20px rgba(255, 223, 0, 0.8);
-        background-color: #FFD700;
+    .card {
+        width: 22vw;
+        /* Slightly larger for touch targets */
+        min-width: 50px;
     }
 
-    100% {
-        box-shadow: 0px 0px 40px rgba(255, 255, 0, 1);
-        background-color: #FFCC00;
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    button {
+        font-size: 1rem;
+        padding: 8px 16px;
     }
 }
 
-/* Optimized for iPhones (13, 14, Mini, SE) & Samsung Galaxy */
+/* Medium Phones  */
 @media (max-width: 768px) {
+    /* body {
+    height: fit-content;
+} */
+
     .board {
         grid-template-columns: repeat(4, 1fr);
+        /* More columns for better fit */
         gap: 6px;
         max-width: 95%;
     }
@@ -347,10 +347,10 @@ button:hover {
     .card {
         width: 18vw;
         min-width: 55px;
-        /* Ensures good visibility */
     }
 
     h1 {
+        margin-top: 10px;
         font-size: 1.8rem;
     }
 

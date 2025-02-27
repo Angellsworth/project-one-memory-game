@@ -12,30 +12,28 @@ const matchMessageArray = [
   "Allons-y! You're speeding through these matches!",
   "Geronimo! Another match secured!",
   "I am and always will be the optimist. And you're winning!",
-  "Great men are forged in fire. So are great matches!",
-  "The universe is big. It's vast and complicated... But you figured that match out!",
-  "Don't blink! You almost missed that match!",
-  "I love a good puzzle. And you're solving this one brilliantly!"
+  "Great men are forged in fire. So are great matches!"
 ];
 const noMatchMessageArray = [
   "Do you want me to apologize? All right, I'm sorry. Sorry about that! But no match!",
   "I'm sorry. I'm so sorry That wasn't a match! ",
   "Wibbly-wobbly, timey-wimey... stuff But not a match. Try again! ",
   "The universe is vast and complicated And so is this game! No match!",
-  "People assume that time is a strict progression of cause to effect But that card wasn't the effect you expected! ",
-  "You need to get yourself a better dictionary Because that wasn't a match! ",
-  "Don't blink. Don't even blink But maybe try a different card. ",
-  "Fantastic Oh wait... no, not this time. Try again!"
+  "People assume that time is a strict progression of cause to effect But that card wasn't the effect you expected! "
 ];
 const newGameMessageArray = [
   "Time to do what I do best. Be brilliant! A new game begins!",
   "All of time and space, where do you want to start? Here's a fresh board!",
   "Change, my dear. And it seems not a moment too soon. The game has been reset!",
   "Time is not the boss of you. But you better hurry up!",
-  "Run! The matches won't find themselves!",
-  "It's like when you're a kid, and your best friend is imaginary… But these matches are real!",
-  "A straight line may be the shortest distance between two points... But can you match them?",
-  "Bow ties are cool! But matching cards is cooler!"
+  "Run! The matches won't find themselves!"
+];
+const winMessageArray = [
+  "Fantastic! You were FANTASTIC!",
+  "All of time and space, and you conquered this game!",
+  "Well done! Even the Doctor would be impressed!",
+  "You’re a Time Lord of memory games!",
+  "Brilliant! The Daleks don’t stand a chance against you!"
 ];
 
 /*---------------------------- Variables (state) ----------------------------*/
@@ -43,7 +41,7 @@ let hasFlipped = false;
 let lockBoard = false; //Prevents extra clicks
 let firstCard;
 let secondCard;
-let timeLeft = 90;
+let timeLeft = 130;
 let timerInterval; //This will store countdown
 themeSong.loop = true;
 let messageEl; // Hooked up with an eventlistener at the bottom
@@ -134,6 +132,7 @@ function checkMatch() {
 
     stopFlipEvent(); //Remove click events from matched cards
     resetBoard(); //unlocks board AFTER the match
+    checkWin(); //did we match them all
   } else {
     messageEl.textContent = getRandomMessage(noMatchMessageArray);
     console.log("Not a match.");
@@ -191,14 +190,13 @@ function regenerateGame() {
   themeSong.pause();
   themeSong.currentTime = 0; // Reset song position to the start
 
-  shuffleCards();
   resetBoard();
 
   match = 0;
   matchCountEl.textContent = match;
   messageEl.textContent = getRandomMessage(newGameMessageArray);
 
-  timeLeft = 90; //Reset Timer
+  timeLeft = 130; //Reset Timer
   document.getElementById("time-left").textContent = timeLeft; //update timer display
   clearInterval(timerInterval); //Stop running timer
   timerInterval = null; //start fresh
@@ -208,6 +206,7 @@ function regenerateGame() {
     card.classList.remove("flip"); //turn each individual card face down
     card.addEventListener("click", flipCard); //"RE-add" click event
   });
+  shuffleCards();
   document.getElementById("game-over-overlay").style.display = "none"; // Hide overlay
 }
 
@@ -225,15 +224,34 @@ function endGame() {
   themeSong.currentTime = 0; //Reset song to start
 
   // Only show the overlay if the timer reached 0 (not when all matches are found)
-  if (timeLeft <= 0) {
-    document.getElementById("final-match-count").textContent = match;
-    document.getElementById("game-over-overlay").style.display = "flex";
-  }
+
+  document.getElementById("final-match-count").textContent = match;
+  document.getElementById("game-over-overlay").style.display = "flex";
+
   allCards.forEach((card) => card.removeEventListener("click", flipCard)); //remove event listener
 
   resetButton.style.display = "block"; //make button visible
 }
 
+function checkWin() {
+  const totalPairs = allCards.length / 2; //ALLcards.length match means each match consists of 2 pairs
+  if (match === totalPairs) {
+    setTimeout(() => {
+      clearInterval(timerInterval); //stop the timer
+      themeSong.pause(); //stop the song
+      themeSong.currentTime = 0; //reset the song
+
+      document.getElementById("game-win-overlay").style.display = "flex";
+      document.getElementById("win-message").textContent =
+        getRandomMessage(winMessageArray);
+      endWin();
+    }, 500);
+  }
+}
+function endWin() {
+  lockBoard = true; //lock it down
+  clearInterval(timerInterval); //stop the countdown
+}
 /*----------------------------- Event Listeners -----------------------------*/
 
 // Attach click event to all cards
@@ -294,20 +312,23 @@ resetButton.addEventListener("mouseleave", function () {
     50
   );
 });
+
 // Ensure the script runs only after the page is fully loaded
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("DOM fully loaded. Hiding Play Again button...");
-
   document.getElementById("game-over-overlay").style.display = "none";
-
-  const playAgainButton = document.getElementById("play-again-button");
-  if (playAgainButton) {
-    playAgainButton.addEventListener("click", function () {
-      console.log("Play Again button clicked! Restarting game...");
-      document.getElementById("game-over-overlay").style.display = "none"; // Hide overlay
-      regenerateGame(); // Restart the game
-    });
-  } else {
-    console.error("Play Again button not found! Check your HTML.");
-  }
+  document.getElementById("game-win-overlay").style.display = "none";
 });
+//game over and win game event listeners
+document
+  .getElementById("play-again-button")
+  .addEventListener("click", function () {
+    document.getElementById("game-over-overlay").style.display = "none"; //hide it
+    regenerateGame(); //restart
+  });
+
+document
+  .getElementById("play-again-win-button")
+  .addEventListener("click", function () {
+    document.getElementById("game-win-overlay").style.display = "none"; // Hide overlay
+    regenerateGame(); // Restart the game
+  });
